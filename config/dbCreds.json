@@ -1,0 +1,5 @@
+{
+    "dbType": "mongodb",
+    "host": "localhost",
+    "dbName": "localdb"
+}
