@@ -17,6 +17,21 @@ const insertProduct = async (data, userID) => {
     return true
 }
 
+const deleteItems = async (productID, userID) => {
+    if (await getProduct(userID, productID)) {
+        await Cart.updateOne({ "userID": userID }, { "$pull": { products: { "productID": productID } } })
+        updateGrandTotal(userID)
+        return true
+    }
+    return false
+}
+
+const updateQuantity = async (userID, data) => {
+    console.log(data.price)
+    await Cart.updateOne({ "userID": userID, "products.productID": data.productID }, { $set: { "products.$.quantity": data.quantity, "products.$.subTotal": data.quantity * data.price } })
+    await updateGrandTotal(userID)
+}
+
 async function getProduct(userID, productID) {
     var existFlag = false
     var product = await Cart.find({ 'userID': userID, 'products.productID': productID }, { 'products': 0 })
@@ -46,4 +61,4 @@ const updateGrandTotal = async (id) => {
     }
 }
 
-module.exports = {insertProduct, updateGrandTotal, getItems}
+module.exports = {insertProduct, updateGrandTotal, getItems, deleteItems, updateQuantity}
