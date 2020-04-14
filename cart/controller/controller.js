@@ -157,6 +157,4 @@ async function getProductDetails(productID) {
             });
         })
     });
-    console.log(price)
-    return price
 }
