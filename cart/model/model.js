@@ -21,6 +21,9 @@ const cartSchema = new Schema(
             },
             subTotal : {
                 type : Number
+            },
+            imageURL : {
+                type : String
             }
         }],
     }, { versionKey: false }

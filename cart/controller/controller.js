@@ -26,6 +26,7 @@ exports.insertProductsToCart = async (req, res) => {
         }
         cartDetails.subTotal = productDetails.price  * cartDetails.quantity
         cartDetails.productName = productDetails.productName
+        cartDetails.imageURL = productDetails.productImageLink
         var flag = await repository.insertProduct(cartDetails, tokenDetails._id);
         if (flag == true) {
             res.set({

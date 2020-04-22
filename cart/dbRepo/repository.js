@@ -43,7 +43,7 @@ async function getProduct(userID, productID) {
 }
 
 const getItems = (userID) => {
-    var items = Cart.find({ "userID": userID })
+    var items = Cart.findOne({ "userID": userID })
     return items
 }
 
