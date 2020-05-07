@@ -14,4 +14,6 @@ router.delete("/:productID", controller.deleteHandler)
 
 router.get("/ping", controller.pingHandler)
 
+router.post("/", controller.createCart)
+
 module.exports = router

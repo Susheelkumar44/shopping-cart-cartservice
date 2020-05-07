@@ -61,4 +61,10 @@ const updateGrandTotal = async (id) => {
     }
 }
 
-module.exports = {insertProduct, updateGrandTotal, getItems, deleteItems, updateQuantity}
+const createCart = (cartBody) => {
+    const cart = new Cart(cartBody)
+    console.log(cartBody)
+    return cart.save();
+}
+
+module.exports = {insertProduct, updateGrandTotal, getItems, deleteItems, updateQuantity, createCart}

@@ -5,6 +5,16 @@ var http = require("http")
 
 const authenticator = require("../middleware/webTokenAuthentication")
 
+exports.createCart = async (req, res) => {
+    try {
+        var cart = req.body
+        var responseDet = await repository.createCart(cart)
+        console.log("reponse ", responseDet)
+    }catch(err){
+        logger.info(`Error in creating cart for user ${err}`);
+    }
+}
+
 exports.insertProductsToCart = async (req, res) => {
     try {
         var cartDetails = req.body
@@ -67,6 +77,9 @@ exports.getHandler = async (req, res) => {
         if (cartItems.length == 0) {
             throw "No Data"
         }
+        //console.log("cart products ", cartItems.products)
+        arr = cartItems.products
+        myArr(arr)
         res.set({
             'Content-Type': 'application/json',
             'Status' : 200}) 
@@ -75,6 +88,25 @@ exports.getHandler = async (req, res) => {
         logger.info(`Error in getting cart details and Error is: ${err}`);
         res.status(404).json({code: 404, type: httpStatus.getStatusText(404), message: "No Items in the cart"}) 
     }
+}
+
+function removeA(arr) {
+    var what, a = arguments, L = a.length, ax;
+    while (L > 1 && arr.length) {
+        what = a[--L];
+        while ((ax= arr.indexOf(what)) !== -1) {
+            arr.splice(ax, 1);
+        }
+    }
+    return arr;
+}
+
+function myArr(data1) {
+    arr.forEach(data => {
+        if (data.quantity === 0) {     
+            removeA(data1, data)
+        }
+    })
 }
 
 exports.deleteHandler = async (req, res) => {
