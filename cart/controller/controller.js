@@ -172,6 +172,41 @@ exports.updateQuantityHandler = async (req, res) => {
     }
 }
 
+exports.removeAllProducts = async (req, res) => { 
+    try {
+        var deleteFlag ;
+        try {
+            const authHeader = req.headers["authorization"]
+            tokenDetails = authenticator.getUserDetailsFromToken(authHeader)
+            console.log("Token ID",tokenDetails._id)
+        }catch(err) {
+            logger.info(`Error in Token authentication and Error is: ${err}`); 
+            return res.status(403).json({code: 403, type: httpStatus.getStatusText(403), 
+                message:"Invalid token"}) 
+        }
+        console.log("Request Body ", req.body.products);
+        
+        (req.body.products).forEach(elements => {
+            deleteFlag =  repository.deleteItems(elements, tokenDetails._id)
+        })
+        
+        
+        if (deleteFlag) {
+            res.set({
+                'Content-Type': 'application/json',
+                'Status' : 200})
+
+            return res.send({ "code": "200", "type":httpStatus.getStatusText(200), 
+            "message":"Successfull Operation"});
+        } else {
+            throw "Not found"
+        }
+    } catch (err) {
+        logger.info(`Error in deleting product from cart and Error is: ${err}`);
+        res.status(404).json({code: 404, type: httpStatus.getStatusText(404), message: "Product does not exist in the cart"}) 
+    }
+}
+
 async function getProductDetails(productID) {
     var price
     await new Promise((resolve, reject) => {
